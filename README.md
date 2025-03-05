@@ -12,7 +12,7 @@ $ npm install
 # development
 $ npm run start
 
-# watch mode
+# watch mode (server keeps running and detects changes)
 $ npm run start:dev
 ```
 
@@ -27,4 +27,24 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
+```
+
+## Nest App Terminal Commands
+```bash
+# Install Nest
+npm i -g @nestjs/cli  
+
+# Create Nest App
+nest new $project-name 
+
+# Add module
+nest g module $module-name
+
+# Add Controller
+nest g controller $controller-name
+
+# Add Service
+nest g service $service-name
+
+
 ```
