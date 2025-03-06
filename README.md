@@ -43,8 +43,14 @@ nest g module $module-name
 # Add Controller
 nest g controller $controller-name
 
-# Add Service
+# Add Service (also known as Provider)
 nest g service $service-name
 
 
 ```
+
+## Nest Concepts
+
+### Providers
+- Services, Repositories, Factories, Helpers, etc. 
+- A provider can be injected as a dependency
