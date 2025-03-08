@@ -6,7 +6,8 @@ import {
   Patch,
   Param,
   Delete,
-  Query, ParseIntPipe,
+  Query,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { EmployeesService } from './employees.service';
 import { Prisma } from '@prisma/client';

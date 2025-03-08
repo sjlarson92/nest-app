@@ -63,8 +63,13 @@ npx prisma init
 
 # Add Prisma plugin to IDE if not already installed
 
-# Add Resouce (generates folder with controller, service, module, dto and entities all at once)
+# Add Resource (generates folder with controller, service, module, dto and entities all at once)
 nest g resource $resource-name
+
+# this adds a dependency that adds rate limiting 
+# (preventative to fight against brute force attacks)
+# which is added to app.module.ts
+npm i @nestjs/throttler
 
 ```
 
@@ -94,3 +99,8 @@ nest g resource $resource-name
 - Run migration to generate tables `npx prisma migrate dev --name init`
 - After any changes to models run `npx prisma generate` and then the migration
   `npx prisma migrate dev --name model_change`
+
+### Throttler
+# Adds a dependency that adds rate limiting
+# (preventative to fight against brute force attacks)
+# which is added to app.module.ts
