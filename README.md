@@ -100,7 +100,49 @@ npm i @nestjs/throttler
 - After any changes to models run `npx prisma generate` and then the migration
   `npx prisma migrate dev --name model_change`
 
+### Local PostgreSQL & Prisma
+
+- When setting locally it's important to ensure the user has 
+  the correct permission otherwise migrations will not run
+  properly
+
+```psql
+# Create the user with appropriate privileges:
+CREATE USER your_user WITH PASSWORD 'your_password';
+
+# Grant the necessary roles:
+ALTER USER your_user WITH CREATEDB;
+
+# Create the database with the user as the owner:
+CREATE DATABASE your_database_name OWNER your_user;
+
+# Connect to the database and set up schema permissions:
+\c your_database_name
+GRANT ALL PRIVILEGES ON SCHEMA public TO your_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO your_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO your_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON FUNCTIONS TO your_user;
+
+# Add Database connection string to .env file that Prisma generated
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
+
+# Add Data source to schema.prisma file
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+```
+
+- If there are existing migration that you want to run without creating new ones
+`npx prisma migrate deploy`
+
 ### Throttler
-# Adds a dependency that adds rate limiting
-# (preventative to fight against brute force attacks)
-# which is added to app.module.ts
+
+- Adds a dependency that adds rate limiting
+- (preventative to fight against brute force attacks)
+- which is added to app.module.ts
