@@ -146,3 +146,50 @@ datasource db {
 - Adds a dependency that adds rate limiting
 - (preventative to fight against brute force attacks)
 - which is added to app.module.ts
+
+### Testing
+- The @nestjs/testing package provides a set of utilities that enable a more robust testing process. 
+  - Like the Test class, which provides an application execution context that essentially mocks the full Nest runtime, but gives you hooks that make it easy to manage class instances, including mocking and overriding
+```ts
+import { Test } from '@nestjs/testing';
+import { CatsController } from './cats.controller';
+import { CatsService } from './cats.service';
+
+describe('CatsController', () => {
+  let catsController: CatsController;
+  let catsService: CatsService;
+
+  beforeEach(async () => {
+    /*
+     Test.createTestingModule.compile() bootstraps a module with its 
+     dependencies and returns a module that is ready for testing.
+     */
+    const moduleRef = await Test.createTestingModule({
+        controllers: [CatsController],
+        providers: [CatsService],
+      }).compile();
+
+    /*
+     The compile() method is asynchronous and therefore has to be awaited. 
+     Once the module is compiled you can retrieve any static instance 
+     it declares (controllers and providers) using the get() method.
+     
+     The get() can only retrieve static instances. The resolve() returns a unique instance of the provider
+     */
+    catsService = moduleRef.get(CatsService);
+    catsController = moduleRef.get(CatsController);
+  });
+
+  describe('findAll', () => {
+    it('should return an array of cats', async () => {
+      const result = ['test'];
+      jest.spyOn(catsService, 'findAll').mockImplementation(() => result);
+
+      expect(await catsController.findAll()).toBe(result);
+    });
+  });
+});
+```
+
+### SQLite (Test DB)
+- Install SQLite `npm install sqlite3`
